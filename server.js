@@ -18,7 +18,7 @@ server.use((req, res, next) => {
   next();
 });
 
-// ⚠️ Bind the db to the app for json-server-auth
+//  Bind the db to the app for json-server-auth
 server.db = router.db;
 
 // Auth rules
@@ -33,6 +33,7 @@ server.use(jsonServer.defaults());
 server.use(rules);
 server.use(auth);
 server.use("/api", router);
+server.use(express.json());
 
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
