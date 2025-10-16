@@ -4,29 +4,37 @@ const cors = require("cors");
 const auth = require("json-server-auth");
 
 const server = express();
-const router = jsonServer.router("./data/db.json");
-const middlewares = jsonServer.defaults();
 
-// Enable CORS properly
+// Enable CORS
 server.use(cors());
-server.use(middlewares);
+server.use(express.json());
 
-// Set up auth rules BEFORE router
+// JSON Server router
+const router = jsonServer.router("./data/db.json");
+
+// ⚠️ Bind the db to the app for json-server-auth
+server.db = router.db;
+
+// Auth rules
 const rules = auth.rewriter({
   products: 444,
   featured_products: 444,
-  orders: 600,
-  users: 600,
+  orders: 660,
+  users: 600
 });
 
+// Apply auth & rules
 server.use(rules);
 server.use(auth);
 
-// Use only one router mount (no duplication)
+// Default middlewares
+server.use(jsonServer.defaults());
+
+// Mount router
 server.use("/api", router);
 
 // Start server
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
-  console.log(`✅ Backend running successfully on port ${PORT}`);
+  console.log(`Backend running successfully on port ${PORT}`);
 });
