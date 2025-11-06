@@ -32,10 +32,10 @@ const rules = auth.rewriter({
 server.use(jsonServer.defaults());
 server.use(rules);
 server.use(auth);
-server.use("/api", router);
+server.use("/", router);
 server.use(express.json());
 
 const PORT = process.env.PORT || 8000;
 server.listen(PORT, () => {
-  console.log(`✅ Backend running on port ${PORT}`);
+  console.log(`Backend running on port http://localhost:${PORT}`);
 });
